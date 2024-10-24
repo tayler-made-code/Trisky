@@ -3,8 +3,7 @@ import json
 import requests
 from datetime import date
 import scrape_scryfall
-import build_commander_database
-import build_all_database
+import database_builder
 
 def download_bulk_data():
     print("Downloading bulk data from Scryfall...")
@@ -40,22 +39,18 @@ def download_bulk_data():
 def update_databases():
     print("Routine Database Updates Starting...")
     
-    # Step 1: Download new bulk data
+    # Download new bulk data
     download_bulk_data()
     
-    # Step 2: Scrape the website for the commander list
+    # Scrape the website for the commander list
     print("Scraping Scryfall for commander list...")
     scraped_commander_list, scraped_total_pages = scrape_scryfall.main()
     
     print(f"Scraped {len(scraped_commander_list)} commanders from {scraped_total_pages} pages.")
     
-    # Step 3: Rebuild the database with scraped data
-    print("Rebuilding commander database with scraped data...")
-    build_commander_database.build_commander_database()
-    
-    # Step 4: Rebuild the all cards database
-    print("Rebuilding all cards database...")
-    build_all_database.build_all_database()
+    # Build Database
+    print("Rebuilding database with scraped data...")
+    database_builder.build_consolidated_database()
 
     print("Routine Database Updates Completed.")
 
